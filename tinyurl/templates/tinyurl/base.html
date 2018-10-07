@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <title>tinyurl</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{% url 'tinyurl:index' %}">TinyUrl</a>
+            </div>
+        </div>
+    </nav>
+</body>
+<script type="text/javascript">
+ $(function() {
+ $('#submitButton').click(function() {
+ $.ajax({
+ type: "POST",
+ url: "/makeshort/",
+ data: {
+ 'url' : $('#url').val(),
+ 'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+ },
+ success: returnSuccess,
+ dataType: 'json'
+ });
+ });
+});
+
+function returnSuccess(data) {
+ if(data.url) {
+ $('#url-result').text(data.url);
+ $('#url').val("");
+ } else {
+ $('#url-result').text("Do not submit blank.");
+ }
+
+}
+</script>
+
+
+{% block body %}
+{% endblock %}
+</html>
